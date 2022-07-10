@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React from 'react';
+import { css } from "@emotion/react";
+import React from "react";
 
-function Container({children}) {
+function Container({ children }) {
   return (
-    <div css={css`
-    width: 70%;
-    margin: auto; 
-    `}>
+    <div
+      css={css`
+        width: 70%;
+        margin: auto;
+      `}>
       {children}
     </div>
   );
