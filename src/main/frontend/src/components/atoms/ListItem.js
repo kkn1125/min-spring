@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const Wrap = styled.div`
+const ListWrap = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-const ListItemTitle = styled.div``;
+const ListItemTitle = styled(Link)`
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+`;
 
 const ListItemTime = styled.div``;
 
@@ -16,13 +21,13 @@ const ListItemBlock = styled.div`
   padding: 0.3rem 0.5rem;
 `;
 
-function ListItem({ title, author, regdate }) {
+function ListItem({ id, title, author, regdate }) {
   return (
     <ListItemBlock>
-      <Wrap>
-        <ListItemTitle>{title}</ListItemTitle>
+      <ListWrap>
+        <ListItemTitle to={`/blog/${id}`}>{title}</ListItemTitle>
         <ListItemTime>{regdate}</ListItemTime>
-      </Wrap>
+      </ListWrap>
       <ListItemAuthor>{author}</ListItemAuthor>
     </ListItemBlock>
   );

@@ -1,51 +1,44 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Button from "../components/atoms/Button";
+import ListItem from "../components/atoms/ListItem";
 import SelectBox from "../components/atoms/SelectBox";
 import Container from "../components/Container";
+import Utils from "../components/molecules/Utils";
+import Footer from "../components/organisms/Footer";
 
-const selectFilter = [
-  {
-    value: "1",
-    option: "제목 순",
-  },
-  {
-    value: "2",
-    option: "저자 순",
-  },
-  {
-    value: "3",
-    option: "시간 순",
-  },
-];
+const limit = 5;
 
 function Blog() {
+  const locate = useLocation();
+  const [key, value] = locate.search.slice(1).split("=");
   const [blogList, setBlogList] = useState([]);
+
+  const currentPage = parseInt(value);
 
   useEffect(() => {
     axios("/api/blogs").then((res) => {
       setBlogList(res.data);
     });
-  }, []);
+  }, []); // 1번
 
   return (
     <Container>
-      <SelectBox options={selectFilter} />
-      <Button color='info' shape='box'>
-        등록
-      </Button>
-      
+      <Utils />
       {blogList.length === 0 && <div>등록된 포스팅이 없습니다 🥲</div>}
-      {blogList.map(({ title, regdate, content, author }) => (
-        <div key={regdate}>
-          <div>
-            <span>{title}</span>
-            <span>{regdate}</span>
-          </div>
-          <div>{content}</div>
-          <div>{author}</div>
-        </div>
-      ))}
+      {blogList
+        .slice((currentPage - 1) * limit, currentPage * limit)
+        .map(({ id, title, regdate, author }, idx) => (
+          <ListItem
+            key={title + idx}
+            id={id}
+            title={title}
+            regdate={regdate}
+            author={author}
+          />
+        ))}
+      <Footer listLength={blogList.length} />
     </Container>
   );
 }
